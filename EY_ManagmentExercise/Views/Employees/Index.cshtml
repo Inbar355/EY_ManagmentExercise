@@ -1,0 +1,76 @@
+﻿@model EY_ManagmentExercise.Models.ViewModels.ManageAttachedEmployeesViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Employees of Department: @Model.CurrentDepartmentName</h2>
+
+
+<p> @Html.ActionLink($"Create new Employee", "Create", new { @Model.CurrentDepartmentId }, new { @class = "btn btn-primary" }) </p>
+<p> @Html.ActionLink($"Add existing Employee", "Details", new { @Model.CurrentDepartmentId, @Model.CurrentDepartmentName }, new { @class = "btn btn-primary" }) </p>
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        <strong> @TempData["AlertMessage"] </strong>
+    </div>
+}
+
+@{
+    if (Model.Employees.Count > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employees[0].ID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employees[0].FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employees[0].LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employees[0].BirthDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employees[0].StartWorkingDay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employees[0].Department.Name)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Employees)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BirthDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartWorkingDay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink($"Remove from {item.Department.Name} Department", "Remove", new { employeeId = item.ID, departmentId = item.Department_id })
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    <h6>Total: @Model.Employees.Count</h6>
+}
